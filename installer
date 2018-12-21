@@ -1,0 +1,7 @@
+#!/bin/bash 
+echo -e 'The YouTube-List V1..\nStart Installing...'
+echo 'Copying File...'
+sudo cp apalist /usr/bin/apalist
+echo 'chmod 775 /usr/bin/apalist is running...'
+sudo chmod 755 /usr/bin/apalist
+echo 'apalist, is installed on your system, you can use that with "apalist" command! GL ;)'

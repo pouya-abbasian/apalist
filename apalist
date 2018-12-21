@@ -1,0 +1,59 @@
+#!/bin/bash
+showHelp() {
+	echo "Sometimes you are in a any sites and you want to have all of that about Aparat links. This software can help you
+	
+  Usage:
+    apalist [OPTION]
+
+  Options:
+  -h    Help
+        This option Shows help (what you currently see)
+
+  -p    Page
+        You can set the webpage, with -p switch, 
+        ex:
+        apalist -p https://aparat.com/...
+
+  -v    Verbose
+        This option make the script show more
+        information while execution.
+        
+"
+	
+	exit
+}
+
+work(){
+url='/tmp/'$RANDOM'.html'
+wget -O $url $page
+if [[ $? == "0" ]];then
+	num=`cat $url | sed 's/https:\/\/www.aparat.com\/v/\nhttps:\/\/www.aparat.com\/v/g'| sed 's/onmousedown=/\n/g' | grep -v 'title="' | sed 's/"//g' | sort -u | grep https://www.aparat.com/v/  | grep -v encodeURI  | grep -v target=_blank | grep -v '>' |  grep -v '<' | sed 's/,//g' | wc -l`
+	echo "Your List Already, Theyer "$num"s : "
+	cat $url | sed 's/https:\/\/www.aparat.com\/v/\nhttps:\/\/www.aparat.com\/v/g'| sed 's/onmousedown=/\n/g' | grep -v 'title="' | sed 's/"//g' | sort -u | grep https://www.aparat.com/v/  | grep -v encodeURI  | grep -v target=_blank | grep -v '>' |  grep -v '<' | sed 's/,//g'  
+	echo $output
+	read -p "Do you want save in any file ? [ y/n ] " yesorno
+	if [[ "$yesorno" == "" ]] ||  [[ "$yesorno" == "y" ]] ||  [[ "$yesorno" == "Y" ]] ; then
+		read -p "Enter file name ~> " filename
+		cat $url | sed 's/https:\/\/www.aparat.com\/v/\nhttps:\/\/www.aparat.com\/v/g'| sed 's/onmousedown=/\n/g' | grep -v 'title="' | sed 's/"//g' | sort -u | grep https://www.aparat.com/v/  | grep -v encodeURI  | grep -v target=_blank | grep -v '>' |  grep -v '<' | sed 's/,//g' | sort -u > $filename
+	else
+		echo 'ok bye!'
+	fi
+else
+	exit 1
+fi
+}
+while getopts "hp" options; do
+	case "$options" in
+		h)
+			showHelp ;;
+		p)
+			page=$2 ;; # Set webpage
+	esac
+done
+echo 'wellcome !'
+if [ "$page" ];then
+	work
+else
+	read -p "Please Enter Aparat Link ~> " page
+	work
+fi
